@@ -196,7 +196,7 @@ def main() -> int:
     with open(setup_cfg, 'w') as f:
         contents = sio.getvalue().strip() + '\n'
         contents = contents.replace('\t', '    ')
-        contents = contents.replace(' \n', '')
+        contents = contents.replace(' \n', '\n')
         f.write(contents)
 
     print(f'{setup_py} and {setup_cfg} written!')
