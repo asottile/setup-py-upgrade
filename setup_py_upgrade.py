@@ -30,7 +30,7 @@ OPTIONS_KEYS = frozenset((
 FIND_PACKAGES_ARGS = ('where', 'exclude', 'include')
 
 
-def node_is_setuptools_attr_call(node: ast.Call, attr: str) -> bool:
+def is_setuptools_attr_call(node: ast.Call, attr: str) -> bool:
     return (
         # X(
         (isinstance(node.func, ast.Name) and node.func.id == attr) or
@@ -41,13 +41,6 @@ def node_is_setuptools_attr_call(node: ast.Call, attr: str) -> bool:
             node.func.value.id == 'setuptools' and
             node.func.attr == attr
         )
-    )
-
-
-def node_is_find_packages(node: ast.AST) -> bool:
-    return (
-        isinstance(node, ast.Call) and
-        node_is_setuptools_attr_call(node, 'find_packages')
     )
 
 
@@ -96,7 +89,7 @@ class Visitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Call(self, node: ast.Call) -> None:
-        if node_is_setuptools_attr_call(node, 'setup'):
+        if is_setuptools_attr_call(node, 'setup'):
             for kwd in node.keywords:
                 if kwd.arg in METADATA_KEYS:
                     section = 'metadata'
@@ -109,8 +102,10 @@ class Visitor(ast.NodeVisitor):
 
                 if isinstance(kwd.value, ast.Name):
                     value = f'file: {self._files[kwd.value.id]}'
-                elif node_is_find_packages(kwd.value):
-                    assert isinstance(kwd.value, ast.Call), kwd.value
+                elif (
+                        isinstance(kwd.value, ast.Call) and
+                        is_setuptools_attr_call(kwd.value, 'find_packages')
+                ):
                     find_section = {
                         k: ast.literal_eval(v)
                         for k, v in zip(FIND_PACKAGES_ARGS, kwd.value.args)
