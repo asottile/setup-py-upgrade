@@ -99,7 +99,11 @@ universal = True
 ## what versions of setuptools / pip does the output work with?
 
 - `pip>=1.5` (when installing from a wheel)
+    - released 2014-01-02
 - `setuptools>=30.3` (when building from source)
+    - released 2016-12-08
+- `virtualenv>=15.2` (to get a sufficient setuptools via `--no-download`)
+   - released 2018-03-21
 
 ## what is not supported
 
