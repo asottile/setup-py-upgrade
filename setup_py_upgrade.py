@@ -189,7 +189,7 @@ def main() -> int:
                 cfg[section_name][k] = v
 
     with open(setup_py, 'w') as f:
-        f.write('from setuptools import setup\n\nsetup()\n')
+        f.write('from setuptools import setup\nsetup()\n')
 
     sio = io.StringIO()
     cfg.write(sio)
