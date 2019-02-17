@@ -37,7 +37,6 @@ $ setup-py-upgrade ../pre-commit
 $ tail -n999 ../pre-commit/setup.{py,cfg}
 ==> ../pre-commit/setup.py <==
 from setuptools import setup
-
 setup()
 
 ==> ../pre-commit/setup.cfg <==
