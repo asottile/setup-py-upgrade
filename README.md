@@ -60,7 +60,7 @@ classifiers =
     Programming Language :: Python :: Implementation :: PyPy
 
 [options]
-packages = :find
+packages = find:
 install_requires =
     aspy.yaml
     cfgv>=1.4.0

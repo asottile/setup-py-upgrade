@@ -115,7 +115,7 @@ class Visitor(ast.NodeVisitor):
                         for kwd in kwd.value.keywords
                     })
                     self.sections['options.packages.find'] = find_section
-                    value = ':find'
+                    value = 'find:'
                 else:
                     try:
                         value = ast.literal_eval(kwd.value)
