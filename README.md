@@ -26,8 +26,7 @@ optional arguments:
 
 pass the root directory of the repository you'd like to convert
 
-the script will not overwrite the files -- it prints the resulting files to
-stdout.
+the script overwrites `setup.py` and `setup.cfg` when run
 
 ## sample output
 
