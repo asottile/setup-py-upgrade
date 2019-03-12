@@ -169,8 +169,11 @@ def main() -> int:
 
     # always want these to start with a newline
     for section in ('entry_points', 'package_data'):
-        for k, v in sections.get(f'options.{section}', {}).items():
+        for k, v in dict(sections.get(f'options.{section}', {})).items():
             if '\n' not in v:
+                if k == '':
+                    sections[f'options.{section}'].pop(k)
+                    k = '*'
                 sections[f'options.{section}'][k] = f'\n{v}'
 
     cfg = configparser.ConfigParser()
