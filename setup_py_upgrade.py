@@ -166,6 +166,10 @@ def main() -> int:
                 ir.append(f'{dep}; {k[1:]}')
 
     sections = {k: reformat_lists(v) for k, v in visitor.sections.items() if v}
+    if sections.get('options', {}).get('package_dir'):
+        sections['options']['package_dir'] = _list_as_str([
+            f'{k}={v}' for k, v in sections['options']['package_dir'].items()
+        ])
 
     # always want these to start with a newline
     for section in ('entry_points', 'package_data'):
