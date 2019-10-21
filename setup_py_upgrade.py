@@ -134,11 +134,23 @@ def _list_as_str(lst: Sequence[str]) -> str:
         return '\n' + '\n'.join(lst)
 
 
-def reformat_lists(section: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        k: _list_as_str(v) if isinstance(v, (list, tuple)) else v
-        for k, v in section.items()
-    }
+def _dict_as_str(dct: Dict[str, str]) -> str:
+    return '\n' + '\n'.join(
+        (key + ' = ' + value) for key, value in dct.items()
+    )
+
+
+def reformat_values(section: Dict[str, Any]) -> Dict[str, Any]:
+    new_section = {}
+    for key, value in section.items():
+        if isinstance(value, (list, tuple)):
+            new_value = _list_as_str(value)
+        elif isinstance(value, dict):
+            new_value = _dict_as_str(value)
+        else:
+            new_value = value
+        new_section[key] = new_value
+    return new_section
 
 
 def main() -> int:
@@ -165,7 +177,11 @@ def main() -> int:
             for dep in deps:
                 ir.append(f'{dep}; {k[1:]}')
 
-    sections = {k: reformat_lists(v) for k, v in visitor.sections.items() if v}
+    sections = {
+        k: reformat_values(v)
+        for k, v in visitor.sections.items()
+        if v
+    }
     if sections.get('options', {}).get('package_dir'):
         sections['options']['package_dir'] = _list_as_str([
             f'{k}={v}' for k, v in sections['options']['package_dir'].items()
