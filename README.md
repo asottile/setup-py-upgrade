@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/asottile/setup-py-upgrade.svg?branch=master)](https://travis-ci.org/asottile/setup-py-upgrade)
+[![Build Status](https://dev.azure.com/asottile/asottile/_apis/build/status/asottile.setup-py-upgrade?branchName=master)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=master)
+[![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/asottile/asottile/37/master.svg)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=master)
 
 setup-py-upgrade
 ================
