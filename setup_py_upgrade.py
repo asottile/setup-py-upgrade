@@ -136,20 +136,19 @@ def _list_as_str(lst: Sequence[str]) -> str:
 
 def _dict_as_str(dct: Dict[str, str]) -> str:
     return '\n' + '\n'.join(
-        (key + ' = ' + value) for key, value in dct.items()
+        f'{key} = {value}' for key, value in dct.items()
     )
 
 
-def reformat_values(section: Dict[str, Any]) -> Dict[str, Any]:
+def _reformat(section: Dict[str, Any]) -> Dict[str, Any]:
     new_section = {}
     for key, value in section.items():
         if isinstance(value, (list, tuple)):
-            new_value = _list_as_str(value)
+            new_section[key] = _list_as_str(value)
         elif isinstance(value, dict):
-            new_value = _dict_as_str(value)
+            new_section[key] = _dict_as_str(value)
         else:
-            new_value = value
-        new_section[key] = new_value
+            new_section[key] = value
     return new_section
 
 
@@ -178,7 +177,7 @@ def main() -> int:
                 ir.append(f'{dep}; {k[1:]}')
 
     sections = {
-        k: reformat_values(v)
+        k: _reformat(v)
         for k, v in visitor.sections.items()
         if v
     }
