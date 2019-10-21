@@ -5,6 +5,7 @@ import io
 import os.path
 from typing import Any
 from typing import Dict
+from typing import Optional
 from typing import Sequence
 
 METADATA_KEYS = frozenset((
@@ -100,7 +101,10 @@ class Visitor(ast.NodeVisitor):
                         f'{kwd.arg}= is not supported in setup.cfg',
                     )
 
-                if isinstance(kwd.value, ast.Name):
+                if (
+                        isinstance(kwd.value, ast.Name) and
+                        kwd.value.id in self._files
+                ):
                     value = f'file: {self._files[kwd.value.id]}'
                 elif (
                         isinstance(kwd.value, ast.Call) and
@@ -120,7 +124,7 @@ class Visitor(ast.NodeVisitor):
                     try:
                         value = ast.literal_eval(kwd.value)
                     except ValueError:
-                        raise NotImplementedError(f'unparsable {kwd.arg}')
+                        raise NotImplementedError(f'unparsable: {kwd.arg}=')
 
                 self.sections[section][kwd.arg] = value
 
@@ -135,9 +139,7 @@ def _list_as_str(lst: Sequence[str]) -> str:
 
 
 def _dict_as_str(dct: Dict[str, str]) -> str:
-    return '\n' + '\n'.join(
-        f'{key} = {value}' for key, value in dct.items()
-    )
+    return _list_as_str([f'{k}={v}' for k, v in dct.items()])
 
 
 def _reformat(section: Dict[str, Any]) -> Dict[str, Any]:
@@ -152,10 +154,10 @@ def _reformat(section: Dict[str, Any]) -> Dict[str, Any]:
     return new_section
 
 
-def main() -> int:
+def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('directory')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     setup_py = os.path.join(args.directory, 'setup.py')
     with open(setup_py, 'rb') as setup_py_f:
@@ -174,17 +176,9 @@ def main() -> int:
             deps = visitor.sections['options.extras_require'].pop(k)
             ir = visitor.sections['options'].setdefault('install_requires', [])
             for dep in deps:
-                ir.append(f'{dep}; {k[1:]}')
+                ir.append(f'{dep};{k[1:]}')
 
-    sections = {
-        k: _reformat(v)
-        for k, v in visitor.sections.items()
-        if v
-    }
-    if sections.get('options', {}).get('package_dir'):
-        sections['options']['package_dir'] = _list_as_str([
-            f'{k}={v}' for k, v in sections['options']['package_dir'].items()
-        ])
+    sections = {k: _reformat(v) for k, v in visitor.sections.items() if v}
 
     # always want these to start with a newline
     for section in ('entry_points', 'package_data'):
@@ -194,6 +188,12 @@ def main() -> int:
                     sections[f'options.{section}'].pop(k)
                     k = '*'
                 sections[f'options.{section}'][k] = f'\n{v}'
+
+    # always start project_urls with a newline as well
+    if sections.get('metadata', {}).get('project_urls'):
+        project_urls = sections['metadata']['project_urls']
+        if not project_urls.startswith('\n'):
+            sections['metadata']['project_urls'] = f'\n{project_urls}'
 
     cfg = configparser.ConfigParser()
     cfg.update(sections)
