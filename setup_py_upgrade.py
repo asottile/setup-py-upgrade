@@ -117,6 +117,7 @@ class Visitor(ast.NodeVisitor):
                     find_section.update({
                         kwd.arg: ast.literal_eval(kwd.value)
                         for kwd in kwd.value.keywords
+                        if kwd.arg is not None  # for mypy's sake
                     })
                     self.sections['options.packages.find'] = find_section
                     value = 'find:'
