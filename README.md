@@ -117,3 +117,9 @@ ext_modules= is not supported in setup.cfg
 
 To convert those, temporarily remove the offending constructs from `setup.py`,
 then run `setup-py-upgrade`, then paste them back into the file.
+
+## related projects
+
+- [setup-cfg-fmt]: apply a consistent format to `setup.cfg` files
+
+[setup-cfg-fmt]: https://github.com/asottile/setup-cfg-fmt
