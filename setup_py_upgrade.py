@@ -182,7 +182,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     sections = {k: _reformat(v) for k, v in visitor.sections.items() if v}
 
     # always want these to start with a newline
-    for section in ('entry_points', 'package_data'):
+    for section in ('entry_points', 'package_data', 'exclude_package_data'):
         for k, v in dict(sections.get(f'options.{section}', {})).items():
             if '\n' not in v:
                 if k == '':
