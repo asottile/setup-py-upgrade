@@ -234,6 +234,22 @@ def test_empty_string_package_data(tmpdir):
     )
 
 
+def test_empty_string_exclude_package_data(tmpdir):
+    tmpdir.join('setup.py').write(
+        'from setuptools import setup\n'
+        'setup(name="foo", exclude_package_data={"": ["*.tar.gz"]})\n',
+    )
+    main((str(tmpdir),))
+    assert tmpdir.join('setup.cfg').read() == (
+        '[metadata]\n'
+        'name = foo\n'
+        '\n'
+        '[options.exclude_package_data]\n'
+        '* =\n'
+        '    *.tar.gz\n'
+    )
+
+
 def test_package_data_multiple_entries(tmpdir):
     tmpdir.join('setup.py').write(
         'from setuptools import setup\n'
