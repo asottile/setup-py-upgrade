@@ -1,11 +1,11 @@
+from __future__ import annotations
+
 import argparse
 import ast
 import configparser
 import io
 import os.path
 from typing import Any
-from typing import Dict
-from typing import Optional
 from typing import Sequence
 
 METADATA_KEYS = frozenset((
@@ -47,11 +47,11 @@ def is_setuptools_attr_call(node: ast.Call, attr: str) -> bool:
 
 class Visitor(ast.NodeVisitor):
     def __init__(self) -> None:
-        self.sections: Dict[str, Dict[str, Any]] = {}
+        self.sections: dict[str, dict[str, Any]] = {}
         self.sections['metadata'] = {}
         self.sections['options'] = {}
 
-        self._files: Dict[str, str] = {}
+        self._files: dict[str, str] = {}
 
     def visit_With(self, node: ast.With) -> None:
         # with open("filename", ...) as fvar:
@@ -139,11 +139,11 @@ def _list_as_str(lst: Sequence[str]) -> str:
         return '\n' + '\n'.join(lst)
 
 
-def _dict_as_str(dct: Dict[str, str]) -> str:
+def _dict_as_str(dct: dict[str, str]) -> str:
     return _list_as_str([f'{k}={v}' for k, v in dct.items()])
 
 
-def _reformat(section: Dict[str, Any]) -> Dict[str, Any]:
+def _reformat(section: dict[str, Any]) -> dict[str, Any]:
     new_section = {}
     for key, value in section.items():
         if isinstance(value, (list, tuple)):
@@ -155,7 +155,7 @@ def _reformat(section: Dict[str, Any]) -> Dict[str, Any]:
     return new_section
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('directory')
     args = parser.parse_args(argv)
