@@ -1,6 +1,6 @@
-[![Build Status](https://dev.azure.com/asottile/asottile/_apis/build/status/asottile.setup-py-upgrade?branchName=master)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=master)
-[![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/asottile/asottile/37/master.svg)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=master)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/asottile/setup-py-upgrade/master.svg)](https://results.pre-commit.ci/latest/github/asottile/setup-py-upgrade/master)
+[![Build Status](https://dev.azure.com/asottile/asottile/_apis/build/status/asottile.setup-py-upgrade?branchName=main)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=main)
+[![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/asottile/asottile/37/main.svg)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=37&branchName=main)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/asottile/setup-py-upgrade/main.svg)](https://results.pre-commit.ci/latest/github/asottile/setup-py-upgrade/main)
 
 setup-py-upgrade
 ================
