@@ -9,7 +9,9 @@ upgrade a setup.py to declarative metadata
 
 ## installation
 
-`pip install setup-py-upgrade`
+```bash
+pip install setup-py-upgrade
+```
 
 ## cli
 
