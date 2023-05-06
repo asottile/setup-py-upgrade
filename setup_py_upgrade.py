@@ -64,7 +64,11 @@ class Visitor(ast.NodeVisitor):
                 node.items[0].context_expr.func.id == 'open' and
                 # "filename"
                 len(node.items[0].context_expr.args) > 0 and
-                isinstance(node.items[0].context_expr.args[0], ast.Str) and
+                isinstance(
+                    node.items[0].context_expr.args[0],
+                    ast.Constant,
+                ) and
+                isinstance(node.items[0].context_expr.args[0].value, str) and
                 # as fvar
                 isinstance(node.items[0].optional_vars, ast.Name) and
                 # varname =
