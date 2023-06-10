@@ -89,7 +89,7 @@ class Visitor(ast.NodeVisitor):
                 )
         ):
             varname = node.body[0].targets[0].id
-            filename = node.items[0].context_expr.args[0].s
+            filename = node.items[0].context_expr.args[0].value
             self._files[varname] = filename
         self.generic_visit(node)
 
