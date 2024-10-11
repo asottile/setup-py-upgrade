@@ -5,8 +5,8 @@ import ast
 import configparser
 import io
 import os.path
+from collections.abc import Sequence
 from typing import Any
-from typing import Sequence
 
 METADATA_KEYS = frozenset((
     'name', 'version', 'url', 'download_url', 'project_urls', 'author',
